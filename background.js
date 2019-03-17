@@ -17,8 +17,8 @@
                            body: JSON.stringify(collection)
                        })
                    })
-                   .catch(e => console.log(e))
            })
+           .catch(e => console.log(e))
    }
    chrome.bookmarks.onCreated.addListener(fetchy);
    chrome.bookmarks.onRemoved.addListener(fetchy);
