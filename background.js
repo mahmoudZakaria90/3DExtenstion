@@ -11,7 +11,6 @@
                            bookmark["children"] = data.children;
                            collection.push(bookmark)
                        })
-                       console.log(collection)
                        fetch('https://zekas-51feb.firebaseio.com/structuredBookmarks.json', {
                            method: 'POST',
                            body: JSON.stringify(collection)
@@ -22,7 +21,7 @@
    }
    chrome.bookmarks.onCreated.addListener(fetchy);
    chrome.bookmarks.onRemoved.addListener(fetchy);
-   
+
    chrome.runtime.onInstalled.addListener(function() {
        chrome.tabs.onCreated.addListener(function(tab) {
            if (tab.url === "chrome://newtab/") {
