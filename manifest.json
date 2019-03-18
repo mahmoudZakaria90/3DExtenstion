@@ -1,7 +1,7 @@
 {
-    "name": "Getting Started Example",
+    "name": "bookmarks",
     "version": "1.0",
-    "description": "Build an Extension!",
+    "description": "ChromeAPI-bookmarks",
     "manifest_version": 2,
 	"background": {
 	  "scripts": ["background.js"],
