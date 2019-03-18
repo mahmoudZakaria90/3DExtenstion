@@ -1,5 +1,5 @@
 {
-    "name": "bookmarks",
+    "name": "bookmarky-UI",
     "version": "1.0",
     "description": "ChromeAPI-bookmarks",
     "manifest_version": 2,
@@ -7,7 +7,7 @@
 	  "scripts": ["background.js"],
 	  "persistent": false
 	},
-	"permissions": ["tabs", "bookmarks", "declarativeContent"],
+	"permissions": ["bookmarks", "declarativeContent"],
 	"page_action": {
 		"default_popup": "popup.html"
 	}
