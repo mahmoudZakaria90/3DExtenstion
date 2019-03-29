@@ -1,14 +1,25 @@
 {
-  "name": "bookmarky-UI",
-  "version": "1.0.3",
+  "name": "bookmarky",
+  "version": "1.0.4",
   "description": "ChromeAPI-bookmarks",
   "manifest_version": 2,
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
   },
-  "permissions": ["bookmarks", "declarativeContent"],
+  "permissions": [
+    "bookmarks",
+    "declarativeContent"
+  ],
   "page_action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icons/16.png"
+    }
+  },
+  "icons": {
+    "48": "assets/icons/48.png"
   }
 }

@@ -5,57 +5,57 @@
       let bookmark = {};
       bookmark["title"] = data.title;
       bookmark["children"] = data.children;
-      collection.push(bookmark)
-    })
+      collection.push(bookmark);
+    });
 
+    function mapIt(target) {
+      return target
+        .map(item => {
+          if (item.children) {
+            return mapIt(item.children);
+          }
+          return item;
+        })
+        .flat();
+    }
 
-		const bookmarksChildren = collection.filter( bookmark => bookmark.children.length )
-    const bookmarksClient = bookmarksChildren.map(bookmark => {
-      const parentTitle = bookmark.title || '';
-      const bookmarksArray = [];
-     	bookmark.children.reverse().forEach(item => {
-        item['parentTitle'] = parentTitle;
-        bookmarksArray.push(item);
-      })
-      return bookmarksArray;
-    })
+    const merged = collection
+      .map(item => item.children)
+      .reduce((total, next) => total.concat(next));
 
-    let allBookmarks = bookmarksClient.reduce((total, next) => total.concat(next));
-    let filterNested = allBookmarks.filter(bookmark => bookmark.children)
-    if(filterNested.length){
-			filterNested = filterNested.map(item => {
-	        return item.children.map(bookmark => {
-	          const parentTitle = [item.parentTitle, item.title]
-	          bookmark['parentTitle'] = parentTitle;
-	          return bookmark;
-	        })
-	      })
-	      .reduce((total, next) => total.concat(next))
-	    allBookmarks = allBookmarks.concat(filterNested)
-	      .filter(bookmark => !bookmark.children)
-		}
+    let bookmarksFinal = merged.map(bookmark => {
+      if (bookmark.children) {
+        return mapIt(bookmark.children);
+      }
+      return bookmark;
+    });
+
+    bookmarksFinal = bookmarksFinal.flat().sort((a, b) => {
+      return b.dateAdded - a.dateAdded;
+    });
+
+    function render(target) {
+      app.innerHTML = "";
+      target.forEach(item => {
+        const template = `<div class="card-wrap">
+    						<a target="_blank" href=${item.url} class="card">
+    							<h2>${item.title}</h2>         
+    						</a>
+    					</div>`;
+        app.innerHTML += template;
+      });
+    }
 
     function handleInput(e) {
       const value = e.target.value;
-      let inputFiltered = allBookmarks.filter(bookmark => bookmark.title.match(new RegExp(value, 'gi')))
-      render(inputFiltered)
+      let inputFiltered = bookmarksFinal.filter(bookmark =>
+        bookmark.title.match(new RegExp(value, "gi"))
+      );
+      render(inputFiltered);
     }
 
-    function render(target) {
-      app.innerHTML = '';
-      target.forEach(item => {
-        const template = `<div class="card-wrap">
-								<a target="_blank" href=${item.url} class="card">
-									<h2>${item.title}</h2>
-									<p>${Array.isArray(item.parentTitle) ? item.parentTitle.join(' &#8250; ') : item.parentTitle}</p>
-								</a>
-							</div>`
-        app.innerHTML += template
-      })
-    }
-    render(allBookmarks)
-    searchInput.removeAttribute('disabled');
-    searchInput.addEventListener('input', handleInput);
-  })
-
-})()
+    render(bookmarksFinal);
+    searchInput.removeAttribute("disabled");
+    searchInput.addEventListener("input", handleInput);
+  });
+})();
