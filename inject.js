@@ -34,13 +34,30 @@
       return b.dateAdded - a.dateAdded;
     });
 
+    function initRemoveEvent() {
+      const bookmarkRemove = document.getElementsByClassName("card-remove");
+      for (rm of bookmarkRemove) {
+        const id = rm.dataset.id;
+        rm.addEventListener("mousedown", () => {
+          const sure = confirm(
+            `Are you sure you want to delete this bookmark?`
+          );
+          sure &&
+            chrome.bookmarks.remove(id, function() {
+              location.reload();
+            });
+        });
+      }
+    }
+
     function render(target) {
       app.innerHTML = "";
       target.forEach(item => {
         const template = `<div class="card-wrap">
     						<a target="_blank" href=${item.url} class="card">
     							<h2>${item.title}</h2>         
-    						</a>
+                </a>
+                <button data-id=${item.id} class="card-remove">&times;</button>
     					</div>`;
         app.innerHTML += template;
       });
@@ -52,9 +69,11 @@
         bookmark.title.match(new RegExp(value, "gi"))
       );
       render(inputFiltered);
+      initRemoveEvent();
     }
 
     render(bookmarksFinal);
+    initRemoveEvent();
     searchInput.removeAttribute("disabled");
     searchInput.addEventListener("input", handleInput);
   });

@@ -1,18 +1,13 @@
 {
   "name": "bookmarky",
-  "version": "1.0.4",
+  "version": "1.1.4",
   "description": "ChromeAPI-bookmarks",
   "manifest_version": 2,
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "scripts": ["background.js"],
     "persistent": false
   },
-  "permissions": [
-    "bookmarks",
-    "declarativeContent"
-  ],
+  "permissions": ["bookmarks", "declarativeContent"],
   "page_action": {
     "default_popup": "popup.html",
     "default_icon": {
